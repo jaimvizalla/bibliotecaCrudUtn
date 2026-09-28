@@ -1,0 +1,26 @@
+{
+  "name": "bibliotecacrudutn",
+  "version": "1.0.0",
+  "description": "Este proyecto busca simular el **CRUD de una biblioteca** para demostrar el entendimiento de los conocimientos brindados por el **curso Backend de la UTN**.",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "node ./src/index.ts",
+    "start": "",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaimvizalla/bibliotecaCrudUtn.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/jaimvizalla/bibliotecaCrudUtn/issues"
+  },
+  "homepage": "https://github.com/jaimvizalla/bibliotecaCrudUtn#readme",
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  }
+}
