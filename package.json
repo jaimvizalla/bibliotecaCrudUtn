@@ -15,12 +15,15 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/jaimvizalla/bibliotecaCrudUtn/issues"
   },
   "homepage": "https://github.com/jaimvizalla/bibliotecaCrudUtn#readme",
   "devDependencies": {
     "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "mongoose": "^9.10.2"
   }
 }

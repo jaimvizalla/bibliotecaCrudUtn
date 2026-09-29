@@ -6,7 +6,6 @@
     "target": "esnext",
     "noUnusedParameters": true,
     "strict": true,
-    "verbatimModuleSyntax": true,
     "moduleDetection": "force",
   }
 }
