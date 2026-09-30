@@ -1,11 +1,13 @@
 import {connect} from "mongoose"
+process.loadEnvFile()
 
-const connectMongoDb = async () => {
+const URI_DB = process.env.URI_DB || ""
+const connectDb = async(URI : string) =>{
     try{
-        await connect("mongodb://localhost:27017")
-        console.log("¡conectado con exito!")
-    }catch(error){
-        console.log("error al conectarse a mongo")
+        await connect(URI)
+        console.log("conectando ala BD mongo")
+    }catch(e){
+        console.log("error al conectar ala BD mongo")
     }
 }
 
