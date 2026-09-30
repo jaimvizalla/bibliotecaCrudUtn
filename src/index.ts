@@ -1,13 +1,27 @@
-import {connect} from "mongoose"
-process.loadEnvFile()
+import {MongoClient, ObjectId} from "mongodb"
+import dotenv from "dotenv"
 
-const URI_DB = process.env.URI_DB || ""
-const connectDb = async(URI : string) =>{
-    try{
-        await connect(URI)
-        console.log("conectando ala BD mongo")
-    }catch(e){
-        console.log("error al conectar ala BD mongo")
+dotenv.config()
+
+const URI_DB = process.env.URI_DB || " mongodb://localhost:27017/"
+const DB_NAME = process.env.DB_NAME || "bibliotecaCrudUTN"
+
+interface ILibro {
+    _id?: ObjectId
+    titulo: string
+    autor: string
+    precio:number
+    stock:number
+}
+
+async function main(){
+    const client = new MongoClient(URI_DB)
+    try {
+        await client.connect()
+        const db = client.db(DB_NAME)
+        const coleccion = db.collection<ILibro>("libros")
+
+        const [ , , operacion, ...args] = process.argv
     }
 }
 

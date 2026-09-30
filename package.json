@@ -2,9 +2,8 @@
   "name": "bibliotecacrudutn",
   "version": "1.0.0",
   "description": "Este proyecto busca simular el **CRUD de una biblioteca** para demostrar el entendimiento de los conocimientos brindados por el **curso Backend de la UTN**.",
-  "main": "src/index.js",
+  "main": "./dist/index.js",
   "scripts": {
-    "dev": "node ./src/index.ts",
     "start": "node ./dist/index.js",
     "build": "tsc"
   },
@@ -29,4 +28,5 @@
     "mongodb": "^7.7.0",
     "mongoose": "^9.10.2"
   }
+
 }
