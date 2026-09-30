@@ -9,4 +9,7 @@ const connectMongoDb = async () => {
     }
 }
 
-connectMongoDb()
+//connectMongoDb()
+const argumentos = process.argv.splice(2)
+console.log(argumentos)
+const accion = argumentos[0]
