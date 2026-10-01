@@ -22,10 +22,90 @@ async function main(){
         const coleccion = db.collection<ILibro>("libros")
 
         const [ , , operacion, ...args] = process.argv
+        
+        switch(operacion){
+            case "create"{
+                const [titulo, autor, precioStr, stockStr] = args;
+                if(!titulo || !autor || !precioStr || !stockStr){
+                    console.log("Usar: node ./src/index.js create <titulo> <autor> <precio> <stock>")
+                    break
+                }
+                const nuevoLibro: ILibro = {
+                    titulo,
+                    autor,
+                    precio:Number(precioStr),
+                    stock:Number(stockStr)
+                }
+
+                const resultado = await coleccion.insertOne(nuevoLibro)
+                console.log("libro creado exitosamente con id: ${resultado.insertedId}")
+                break
+            }
+            case "read":{
+                const libros = await coleccion.find().toArray()
+                console.log("---Listado de Libros---")
+                console.table(libros)
+                break
+            }
+            case "update":{
+                const [id, titulo, autor, precioStr, stockStr] = args
+                if(!id || !titulo || !autor || !precioStr || !stockStr){
+                    console.log("Usar: node ./src/index.ts/ update <id> <titulo> <autor> <precio> <stock>")
+                    break
+                }
+
+                if (!ObjectId.isValid(id)){
+                    console.log("Error: el ObjectId provisto no es valido.")
+                    break
+                }
+                const resultado = await coleccion.findOneAndUpdate(
+                    {_id: new ObjectId(id)}, 
+                    {   
+                        $set:{
+                            titulo,
+                            autor,
+                            precio:Number(precioStr),
+                            stock: Number(stockStr)
+                        }
+                    }, 
+                    {returnDocument: "after"}
+                )
+                if(resultado){
+                    console.log("Libro actualizado exitosamente: ")
+                    console.log(resultado)
+                }else{
+                    console.log("No se encontro ningun libro con el ID: ${id}")
+                }
+                break
+            }
+            case "delete":{
+                const [id] = args
+                if(!id){
+                    console.log("Usar: node ./src/index.ts delete <id>")
+                    break
+                }
+                if(!ObjectId.isValid(id)){
+                    console.log("error: el ObjectId provisto no es valido")
+                    break
+                }
+
+                const resultado = await coleccion.deleteOne({_id: new ObjectId(id)})
+                if(resultado.deletedCount > 0){
+                    console.log("libro con ID ${id} eliminado correctamente.")
+                }else {
+                    console.log("no se encontro ningun libro con el ID ${id}.")
+                }                
+            }
+            default:
+                console.log("operacion no reconocida o no provista.")
+                console.log("operaciones disponibles: create, read, update, delete")
+                break
+        }
+    } catch(error) {
+        console.error("Error durante la ejecucion: ", error)
+    }finally{
+        await client.close()
     }
 }
+main()
 
-//connectMongoDb()
-const argumentos = process.argv.splice(2)
-console.log(argumentos)
-const accion = argumentos[0]
