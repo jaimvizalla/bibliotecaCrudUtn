@@ -3,7 +3,7 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
-const URI_DB = process.env.URI_DB || " mongodb://localhost:27017/"
+const URI_DB = process.env.URI_DB || "mongodb://localhost:27017/"
 const DB_NAME = process.env.DB_NAME || "bibliotecaCrudUTN"
 
 interface ILibro {
@@ -24,7 +24,7 @@ async function main(){
         const [ , , operacion, ...args] = process.argv
         
         switch(operacion){
-            case "create"{
+            case "create":{
                 const [titulo, autor, precioStr, stockStr] = args;
                 if(!titulo || !autor || !precioStr || !stockStr){
                     console.log("Usar: node ./src/index.js create <titulo> <autor> <precio> <stock>")
@@ -38,15 +38,25 @@ async function main(){
                 }
 
                 const resultado = await coleccion.insertOne(nuevoLibro)
-                console.log("libro creado exitosamente con id: ${resultado.insertedId}")
+                console.log(`libro creado exitosamente con id: ${resultado.insertedId}`)
                 break
             }
-            case "read":{
+            
+            case "read": {
                 const libros = await coleccion.find().toArray()
-                console.log("---Listado de Libros---")
-                console.table(libros)
+                console.log("--- Listado de Libros ---")
+    
+                if (libros.length === 0) {
+                    console.log("No hay libros registrados en la biblioteca.")
+                } else {
+                    libros.forEach((libro, index) =>  {
+                    console.log(`${index + 1}. [ID: ${libro._id}] "${libro.titulo}" - ${libro.autor} | Precio: $${libro.precio} | Stock: ${libro.stock}`)
+                    })
+                }
                 break
             }
+
+
             case "update":{
                 const [id, titulo, autor, precioStr, stockStr] = args
                 if(!id || !titulo || !autor || !precioStr || !stockStr){
@@ -74,7 +84,7 @@ async function main(){
                     console.log("Libro actualizado exitosamente: ")
                     console.log(resultado)
                 }else{
-                    console.log("No se encontro ningun libro con el ID: ${id}")
+                    console.log(`No se encontro ningun libro con el ID: ${id}`)
                 }
                 break
             }
@@ -91,10 +101,11 @@ async function main(){
 
                 const resultado = await coleccion.deleteOne({_id: new ObjectId(id)})
                 if(resultado.deletedCount > 0){
-                    console.log("libro con ID ${id} eliminado correctamente.")
+                    console.log(`libro con ID ${id} eliminado correctamente.`)
                 }else {
-                    console.log("no se encontro ningun libro con el ID ${id}.")
-                }                
+                    console.log(`no se encontro ningun libro con el ID ${id}.`)
+                }
+                break               
             }
             default:
                 console.log("operacion no reconocida o no provista.")
